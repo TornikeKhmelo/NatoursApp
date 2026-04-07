@@ -1,17 +1,17 @@
-const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-dotenv.config({ path: "./config.env" });
-const app = require("./app");
+dotenv.config({ path: './config.env' });
+const app = require('./app');
 
-process.on("uncaughtException", (err) => {
+process.on('uncaughtException', err => {
   console.log(err.name, err.message);
   process.exit(1);
 });
 
-const DB = process.env.DATABASE.replace(
-  "<PASSWORD>",
-  process.env.DATABASE_PASSWORD
+const DB = process.env.DATABASE_LOCAL.replace(
+  '<PASSWORD>',
+  process.env.DATABASE_PASSWORD,
 );
 
 mongoose
@@ -21,7 +21,7 @@ mongoose
     useFindAndModify: false,
   })
   .then(() => {
-    console.log("Connected");
+    console.log('Connected');
   });
 
 const port = process.env.PORT || 3000;
@@ -29,7 +29,7 @@ const server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });
 
-process.on("unhandledRejection", (err) => {
+process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
   server.close(() => {
     process.exit(1);
